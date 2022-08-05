@@ -7,7 +7,7 @@ job('FirstJob-seed1') {
     scm("* * * * *")
   }
    steps {
-    shell("cp -rvf * /root")
+    shell('echo "testme here please"')
   }
 }
 
