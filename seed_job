@@ -1,0 +1,42 @@
+job('FirstJob-seed1') {
+    description("This job will pull the github repository when developer commit code, create or update the container using given Dockerfile and push image to DockerHub")
+    scm {
+        github('theopskart22/dsl','main')
+    }
+    triggers {
+    scm("* * * * *")
+  }
+   steps {
+    shell("cp -rvf * /root")
+  }
+}
+
+job("SecondJob-seed2") {
+  triggers {
+    upstream('FirstJob-seed1','SUCCESS')
+  }
+  steps {
+    shell( echo  2nd job is created")
+  }
+}
+
+job("ThirdJob-seed3") {
+  description ("This Job will Test and Notify Developer")
+  triggers {
+    upstream('SecondJob-seed2"','SUCCESS')   
+  }
+steps {
+  shell( echo "3rd Job Created ")
+}
+}
+
+buildPipelineView('SeedJobs') {
+  filterBuildQueue(true)
+  filterExecutors(false)
+  title('SeedJobs')
+  displayedBuilds(1)
+  selectedJob('FirstJob-seed1')
+  alwaysAllowManualTrigger(false)
+  showPipelineParameters(true)
+  refreshFrequency(1)
+}
