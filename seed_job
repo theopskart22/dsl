@@ -16,7 +16,7 @@ job("SecondJob-seed2") {
     upstream('FirstJob-seed1','SUCCESS')
   }
   steps {
-    shell( echo  2nd job is created")
+    shell( echo  "2nd job is created")
   }
 }
 
